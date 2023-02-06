@@ -1,0 +1,30 @@
+cabal-version:   3.0
+name:            haskell-interpreter
+version:         0.1.0.0
+license:         Apache-2.0
+license-file:    LICENSE
+author:          nikhils9
+maintainer:      nikhilshetty447@gmail.com
+category:        Development
+build-type:      Simple
+extra-doc-files: CHANGELOG.md
+
+common warnings
+    ghc-options: -Wall
+
+library
+    import:           warnings
+    exposed-modules:  MyLib
+    build-depends:    base ^>=4.16.3.0
+    hs-source-dirs:   src
+    default-language: Haskell2010
+
+test-suite haskell-interpreter-test
+    import:           warnings
+    default-language: Haskell2010
+    type:             exitcode-stdio-1.0
+    hs-source-dirs:   test
+    main-is:          Main.hs
+    build-depends:
+        base ^>=4.16.3.0,
+        haskell-interpreter
