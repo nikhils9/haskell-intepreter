@@ -1,4 +1,9 @@
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+
 module Interpreter where
+
+import Data.Functor.Identity
+import Control.Monad.Except
 
 data Expr = 
     Lit Int
@@ -30,14 +35,22 @@ eval (Div e1 e2) =
         else eval e1 `div` eval e2
 -}
 
-eval :: Expr -> Either String Int
+newtype Eval a = Eval (ExceptT String Identity a)
+    deriving (Functor, Applicative, Monad)
+
+eval :: Expr -> Eval Int
 eval (Lit i) = return i
 eval (Add e1 e2) =
     (+) <$> eval e1 <*> eval e2
 eval (Div e1 e2) =
-    case eval e2 of
-        Right 0 -> divisionByZero
-        _ -> div <$> eval e1 <*> eval e2
+    do
+        v1 <- eval e1
+        v2 <- eval e2
+        if v2 == 0
+            then divisionByZero
+            else return $ div v1 v2
 
-divisionByZero :: Either String Int
-divisionByZero = Left "division by zero"
+runEval (Eval e) = runIdentity $ runExceptT e
+
+divisionByZero :: Eval Int
+divisionByZero = Eval $ throwError "division by zero"
