@@ -17,6 +17,7 @@ library
     exposed-modules:  Interpreter
     build-depends:    
         base ^>=4.16.3.0,
-        mtl
+        mtl,
+        containers
     hs-source-dirs:   src
     default-language: Haskell2010
