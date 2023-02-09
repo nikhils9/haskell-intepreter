@@ -14,7 +14,9 @@ common warnings
 
 library
     import:           warnings
-    exposed-modules:  Interpreter
+    exposed-modules:  
+        Eval,
+        Expr
     build-depends:    
         base ^>=4.16.3.0,
         mtl,
